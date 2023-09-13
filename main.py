@@ -29,6 +29,7 @@ def get_fingrid_data(url):
     return pd.json_normalize((data))
 
 def show_wind_pcg(df):
+    """show a linechart with wind energy production percentages, requires df from get_fingrid_data"""
     sns.lineplot(data=df,
                  x='start_time',
                  y='wind_pcg')
