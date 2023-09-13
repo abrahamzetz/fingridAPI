@@ -82,18 +82,12 @@ if __name__ == '__main__':
     energy_df['start_time'] = pd.to_datetime(energy_df['start_time'])
     energy_df = energy_df.set_index('start_time')
 
-
-    agg_df = energy_df.resample('D').sum()
-    agg_df.index = agg_df.index + pd.offsets.Day(-1)
-    agg_df['wind_pcg'] = agg_df['value_wind_generation'] / agg_df['value_consumption']
-    print(agg_df)
-
-    daily_energy = aggregate_df(energy_df, 'D')
+    daily_energy = aggregate_df(energy_df, aggregate_by='D')
 
     monthly_energy = aggregate_df(energy_df, aggregate_by='M')
 
     show_wind_vs_consumption(daily_energy)
-    #show_wind_pcg(daily_energy)
+    show_wind_pcg(daily_energy)
 
-#    show_wind_vs_consumption(monthly_energy)
-#    show_wind_pcg(monthly_energy)
+    show_wind_vs_consumption(monthly_energy)
+    show_wind_pcg(monthly_energy)
