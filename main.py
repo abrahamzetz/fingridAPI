@@ -89,5 +89,5 @@ if __name__ == '__main__':
     show_wind_vs_consumption(daily_energy)
     show_wind_pcg(daily_energy)
 
-    show_wind_vs_consumption(monthly_energy)
-    show_wind_pcg(monthly_energy)
+    #show_wind_vs_consumption(monthly_energy)
+    #show_wind_pcg(monthly_energy)
