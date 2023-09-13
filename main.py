@@ -28,6 +28,18 @@ def get_fingrid_data(url):
 
     return pd.json_normalize((data))
 
+def aggregate_df(df, aggregate_by):
+    """aggregate df by D (daily) or M (monthly)"""
+    if aggregate_by in ['D', 'M']:
+        agg_df = df.resample(aggregate_by).sum()
+        offset = pd.offsets.Day(-1) if aggregate_by == 'D' else pd.offsets.MonthBegin(-1)
+        agg_df.index += offset
+        agg_df['wind_pcg'] = agg_df['value_wind_generation'] / agg_df['value_consumption']
+        return agg_df
+    else:
+        print('Value of aggregate_by needs to be "D" or "M"')
+
+
 def show_wind_pcg(df):
     """show a linechart with wind energy production percentages, requires df from get_fingrid_data"""
     sns.lineplot(data=df,
@@ -69,18 +81,19 @@ if __name__ == '__main__':
     energy_df.drop(columns='end_time', inplace=True)
     energy_df['start_time'] = pd.to_datetime(energy_df['start_time'])
     energy_df = energy_df.set_index('start_time')
-    daily_energy = energy_df.resample('D').sum()
-    daily_energy.index = daily_energy.index + pd.offsets.Day(-1)
-    daily_energy['wind_pcg'] = daily_energy['value_wind_generation'] / daily_energy['value_consumption']
-    print(daily_energy)
 
-    monthly_energy = energy_df.resample('M').sum()
-    monthly_energy.index = monthly_energy.index + pd.offsets.MonthBegin(-1)
-    monthly_energy['wind_pcg'] = monthly_energy['value_wind_generation'] / monthly_energy['value_consumption']
-    print(monthly_energy)
+
+    agg_df = energy_df.resample('D').sum()
+    agg_df.index = agg_df.index + pd.offsets.Day(-1)
+    agg_df['wind_pcg'] = agg_df['value_wind_generation'] / agg_df['value_consumption']
+    print(agg_df)
+
+    daily_energy = aggregate_df(energy_df, 'D')
+
+    monthly_energy = aggregate_df(energy_df, aggregate_by='M')
 
     show_wind_vs_consumption(daily_energy)
-    show_wind_pcg(daily_energy)
+    #show_wind_pcg(daily_energy)
 
-    show_wind_vs_consumption(monthly_energy)
-    show_wind_pcg(monthly_energy)
+#    show_wind_vs_consumption(monthly_energy)
+#    show_wind_pcg(monthly_energy)
