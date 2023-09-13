@@ -37,6 +37,7 @@ def show_wind_pcg(df):
     plt.show()
 
 def show_wind_vs_consumption(df):
+    """show a linechart with 2 lines to show wind energy production vs energy consumption. Requires df from get_fingrid_data()"""
     sns.lineplot(data=df,
                  x='start_time',
                  y='value_wind_generation',
