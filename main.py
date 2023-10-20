@@ -17,7 +17,7 @@ def print_hi(name):
 
 def get_fingrid_data(url):
     """fetching Fingrid data as a dataframe, with full url as the parameter"""
-    headers = {'x-api-key': 'VKzlMiSNpW6HYJxEh4Xs2PFOdl6P9HSana1aGQJf'}
+    headers = {'x-api-key': ''}
 
     response = requests.get(url=url, headers=headers)
     # Check if the request was successful (status code 200)
